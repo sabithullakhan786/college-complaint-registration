@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMS - Student Login | College Complaint Management System</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .tab-header {
+      display: flex;
+      border-bottom: 2px solid #e2e8f0;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      text-align: center;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      color: #337ab7;
+      border-bottom-color: #337ab7;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body class="login-body-wrapper">
+
+  <!-- Yellow Header Bar matching the UI -->
+  <header class="top-header">
+    <div class="brand-wrapper">
+      <span class="hamburger-btn">☰</span>
+      <span class="brand-title">COMPLAINT MANAGEMENT SYSTEM</span>
+    </div>
+    <div class="header-actions">
+      <span style="color: #ffffff; font-size: 13px; font-weight: 600; opacity: 0.9;">Student Portal</span>
+    </div>
+  </header>
+
+  <div class="login-center-container">
+    <div class="login-card">
+      <div class="login-card-header">
+        <h1>Student Portal</h1>
+        <p>Login with your USN and Date of Birth</p>
+      </div>
+
+      <div class="login-card-body">
+        
+        <div class="tab-header">
+          <button type="button" class="tab-btn active" id="tabLoginBtn" onclick="switchTab('login')">Student Login</button>
+          <button type="button" class="tab-btn" id="tabRegisterBtn" onclick="switchTab('register')">New Student Register</button>
+        </div>
+
+        <div id="alertBox" class="alert-box"></div>
+
+        <!-- Login Tab -->
+        <div id="loginTabContent" class="tab-content active">
+          <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label class="form-label" for="loginUsn">
+                University Seat Number (USN) <span class="required-star">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="loginUsn" 
+                class="form-control" 
+                placeholder="e.g. 1MS21CS001" 
+                required 
+                style="text-transform: uppercase;"
+                autocomplete="off"
+              >
+            </div>
+
+            <div class="form-group" style="margin-bottom: 22px;">
+              <label class="form-label" for="loginDob">
+                Date of Birth (DOB) <span class="required-star">*</span>
+              </label>
+              <input 
+                type="date" 
+                id="loginDob" 
+                class="form-control" 
+                required
+              >
+            </div>
+
+            <button type="submit" class="btn-primary-cms" style="width: 100%; justify-content: center; height: 42px; font-size: 15px;">
+              Sign In to CMS &rarr;
+            </button>
+          </form>
+
+          <!-- Quick Fill Demo Accounts -->
+          <div class="demo-account-box">
+            <h4>Quick Demo Logins (Click to Autofill):</h4>
+            
+            <div class="demo-chip" onclick="fillDemo('1MS21CS001', '2002-05-15')">
+              <span><strong>John Smith</strong> (1MS21CS001)</span>
+              <span style="color: #64748b; font-size: 11px;">DOB: 2002-05-15</span>
+            </div>
+
+            <div class="demo-chip" onclick="fillDemo('1RV22EC045', '2003-08-20')">
+              <span><strong>Priya Sharma</strong> (1RV22EC045)</span>
+              <span style="color: #64748b; font-size: 11px;">DOB: 2003-08-20</span>
+            </div>
+
+            <div class="demo-chip" onclick="fillDemo('1PE21ME088', '2002-11-10')">
+              <span><strong>Rahul Verma</strong> (1PE21ME088)</span>
+              <span style="color: #64748b; font-size: 11px;">DOB: 2002-11-10</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Registration Tab -->
+        <div id="registerTabContent" class="tab-content">
+          <form id="registerForm" onsubmit="handleRegister(event)">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label" for="regUsn">USN <span class="required-star">*</span></label>
+              <input type="text" id="regUsn" class="form-control" placeholder="e.g. 1MS22CS105" required style="text-transform: uppercase;">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label" for="regDob">Date of Birth <span class="required-star">*</span></label>
+              <input type="date" id="regDob" class="form-control" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label" for="regName">Full Name <span class="required-star">*</span></label>
+              <input type="text" id="regName" class="form-control" placeholder="e.g. Jane Doe" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label" for="regEmail">Email Address</label>
+              <input type="email" id="regEmail" class="form-control" placeholder="e.g. student@college.edu">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label" for="regContact">Contact Number</label>
+              <input type="tel" id="regContact" class="form-control" placeholder="e.g. 9876543210">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label class="form-label" for="regDept">Department</label>
+              <select id="regDept" class="form-control">
+                <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+                <option value="Electronics & Communication">Electronics & Communication</option>
+                <option value="Information Science">Information Science</option>
+                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                <option value="Civil Engineering">Civil Engineering</option>
+                <option value="Electrical & Electronics">Electrical & Electronics</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-primary-cms" style="width: 100%; justify-content: center; height: 42px; font-size: 15px;">
+              Register & Sign In &rarr;
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Cyan Footer matching design -->
+  <footer class="bottom-footer">
+    <span>&copy; 2026 CMS All rights reserved.</span>
+  </footer>
+
+  <script>
+    function switchTab(tab) {
+      const loginTab = document.getElementById('loginTabContent');
+      const regTab = document.getElementById('registerTabContent');
+      const loginBtn = document.getElementById('tabLoginBtn');
+      const regBtn = document.getElementById('tabRegisterBtn');
+      const alertBox = document.getElementById('alertBox');
+      alertBox.style.display = 'none';
+
+      if (tab === 'login') {
+        loginTab.classList.add('active');
+        regTab.classList.remove('active');
+        loginBtn.classList.add('active');
+        regBtn.classList.remove('active');
+      } else {
+        loginTab.classList.remove('active');
+        regTab.classList.add('active');
+        loginBtn.classList.remove('active');
+        regBtn.classList.add('active');
+      }
+    }
+
+    function showAlert(msg, isSuccess = false) {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.textContent = msg;
+      alertBox.className = 'alert-box ' + (isSuccess ? 'alert-success' : 'alert-danger');
+      alertBox.style.display = 'block';
+    }
+
+    function fillDemo(usn, dob) {
+      document.getElementById('loginUsn').value = usn;
+      document.getElementById('loginDob').value = dob;
+      showAlert('Autofilled credentials for USN: ' + usn + '. Click "Sign In" to proceed!', true);
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const usn = document.getElementById('loginUsn').value.trim();
+      const dob = document.getElementById('loginDob').value.trim();
+
+      if (!usn || !dob) {
+        showAlert('Please enter both USN and Date of Birth.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ usn, dob })
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          showAlert('Login successful! Redirecting to dashboard...', true);
+          setTimeout(() => {
+            window.location.href = data.redirect || '/dashboard';
+          }, 400);
+        } else {
+          showAlert(data.message || 'Login failed. Please check USN and DOB.');
+        }
+      } catch (err) {
+        showAlert('Network error connecting to server. Please try again.');
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const usn = document.getElementById('regUsn').value.trim();
+      const dob = document.getElementById('regDob').value.trim();
+      const fullName = document.getElementById('regName').value.trim();
+      const userEmail = document.getElementById('regEmail').value.trim();
+      const contact = document.getElementById('regContact').value.trim();
+      const department = document.getElementById('regDept').value;
+
+      if (!usn || !dob || !fullName) {
+        showAlert('USN, Date of Birth, and Full Name are required.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ usn, dob, fullName, userEmail, contact, department })
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          showAlert('Registration successful! Redirecting to CMS...', true);
+          setTimeout(() => {
+            window.location.href = data.redirect || '/dashboard';
+          }, 400);
+        } else {
+          showAlert(data.message || 'Registration failed.');
+        }
+      } catch (err) {
+        showAlert('Network error connecting to server. Please try again.');
+      }
+    }
+  </script>
+</body>
+</html>
