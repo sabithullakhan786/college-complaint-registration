@@ -78,3 +78,4 @@ college-complaint-system/
 - `POST /api/complaints` - Register a new complaint tagged with current student's USN
 - `GET /api/complaints/:id` - View complete complaint ticket details
 - `GET /api/stats` - Summary statistics for the student dashboard
+# college-complaint-registration
