@@ -79,3 +79,4 @@ college-complaint-system/
 - `GET /api/complaints/:id` - View complete complaint ticket details
 - `GET /api/stats` - Summary statistics for the student dashboard
 # college-complaint-registration
+# college-complaint-registration
